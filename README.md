@@ -82,7 +82,18 @@ Once the workspace opens:
 
 ## Step 2 — Set Up the AGENTS.md File
 
-The `AGENTS.md` file gives Cortex Code persistent project context. CoCo reads it automatically at the start of every conversation, so it always knows your database names, table schemas, and conventions.
+> ### Best Practice: Why AGENTS.md?
+>
+> Without `AGENTS.md`, every new CoCo conversation starts from zero. You'd have to re-explain your database names, table schemas, naming conventions, and project context every single time.
+>
+> With `AGENTS.md`, CoCo **automatically reads it at the start of every conversation** in the Workspace. This means:
+>
+> - **No repetition** — CoCo already knows your database is `COCO_DEMO`, your tables, and their columns
+> - **Consistent output** — CoCo follows your conventions (fully qualified names, correct warehouse/role) without being told
+> - **Team alignment** — Every developer on the project gets the same CoCo behavior because `AGENTS.md` is committed to Git
+> - **Better prompts** — You can write shorter, simpler prompts (e.g., "show top customers by revenue") and CoCo fills in the details
+>
+> Think of it as a **project-level system prompt** for your AI pair-programmer. It's checked into Git and shared across the team — just like a `.editorconfig` or `CONTRIBUTING.md` standardizes human developer behavior.
 
 Open the Cortex Code panel (bottom-right icon) and prompt:
 

@@ -10,11 +10,9 @@ A hands-on quickstart that walks you through using **Cortex Code (CoCo)** as you
 |---|---|
 | Snowflake account | Commercial (non-Gov/VPS) with [Cross-region inference](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-cross-region-inference) enabled |
 | Roles & privileges | `SNOWFLAKE.COPILOT_USER` + `SNOWFLAKE.CORTEX_USER` (or `CORTEX_AGENT_USER`) database roles granted to your role |
-| Git repository | A GitHub (or GitLab/Bitbucket) repo with **at least one commit** on a branch |
-| API integration | A `git_https_api` API integration configured for your Git provider (OAuth2 recommended for GitHub) |
+| GitHub account | With permissions to create new repositories |
+| Snowflake Git API integration | A `git_https_api` API integration configured for GitHub ([setup guide](https://docs.snowflake.com/en/developer-guide/git/git-setting-up)) |
 | Warehouse | A warehouse your role can use (e.g., `APP_WH`) |
-
-> **Tip:** If your repo is empty, add a README via the GitHub UI first — Snowflake cannot connect to repos with zero branches.
 
 ---
 
@@ -22,8 +20,8 @@ A hands-on quickstart that walks you through using **Cortex Code (CoCo)** as you
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│              Git Repository (GitHub/GitLab)          │
-│                  main branch                         │
+│              Git Repository (GitHub)                 │
+│           coco-quickstart / main branch              │
 └──────────┬──────────────────────▲────────────────────┘
            │ clone/pull           │ push + PR merge
            ▼                     │
@@ -45,26 +43,81 @@ A hands-on quickstart that walks you through using **Cortex Code (CoCo)** as you
 
 ---
 
-## Step 0 — Create a Git-Synced Workspace
+## Step 0 — Create a GitHub Repo
 
-1. In Snowsight, go to **Projects → Workspaces → From Git repository**
-2. Paste your repository URL
-3. Select your API integration and authenticate
-4. Create a **feature branch** (e.g., `feature/quickstart-demo`) from the **Changes** tab
+> Snowflake Workspaces cannot connect to an empty repository. You must have at least one commit on a branch before creating a Workspace.
 
-> You are now developing in a Workspace that syncs bidirectionally with your Git repo.
+1. Go to [github.com/new](https://github.com/new)
+2. Set the following:
+   - **Repository name:** `coco-quickstart`
+   - **Visibility:** Private (or Public — your choice)
+   - **Check** "Add a README file"
+3. Click **Create repository**
+
+You now have a repo at `https://github.com/<your-username>/coco-quickstart` with a `main` branch and one commit.
 
 ---
 
-## Step 1 — Set Up Source Data
+## Step 1 — Create a Git-Synced Workspace
 
-Create a **new SQL file** in the workspace (click **+** → SQL Worksheet). Name it `01_setup_source_data.sql`.
+1. In Snowsight, go to **Projects → Workspaces**
+2. Click **+ → From Git repository**
+3. Fill in the form:
+   - **Repository URL:** `https://github.com/<your-username>/coco-quickstart.git`
+   - **Workspace name:** `coco-quickstart`
+   - **API integration:** Select your configured Git API integration
+   - **Authentication:** Personal access token (select your stored secret) or OAuth
+4. Click **Create**
+
+Once the workspace opens:
+
+5. Click the **Changes** tab (left sidebar, branch icon)
+6. Click the branch dropdown and select **Create branch**
+7. Name it: `feature/build-pipeline`
+8. Click **Create**
+
+> You are now on a feature branch in a Git-synced Workspace. Everything you create here will be tracked, diffed, and pushed back to GitHub.
+
+---
+
+## Step 2 — Set Up the AGENTS.md File
+
+The `AGENTS.md` file gives Cortex Code persistent project context. CoCo reads it automatically at the start of every conversation, so it always knows your database names, table schemas, and conventions.
 
 Open the Cortex Code panel (bottom-right icon) and prompt:
 
 > **Prompt:**
 > ```
-> Create a database called COCO_DEMO with a schema called RAW
+> Create a new file called AGENTS.md with the following content:
+>
+> This is a quickstart demo for Cortex Code in Snowsight Workspaces.
+> The data lives in database COCO_DEMO with schemas RAW and ANALYTICS.
+>
+> Source tables:
+> - COCO_DEMO.RAW.CUSTOMERS (customer_id INT, name VARCHAR, email VARCHAR, region VARCHAR, signup_date DATE)
+> - COCO_DEMO.RAW.ORDERS (order_id INT, customer_id INT, order_date DATE, amount DECIMAL, status VARCHAR)
+>
+> Conventions:
+> - Always use fully qualified table names (DATABASE.SCHEMA.TABLE)
+> - Use APP_WH warehouse and SF_INTELLIGENCE_DEMO role
+> - Follow Snowflake SQL best practices
+> ```
+
+Review the diff and accept it.
+
+### Git Checkpoint
+Go to the **Changes** tab. You'll see `AGENTS.md` marked with **A** (added). Write the commit message: `Add AGENTS.md for CoCo project context` and click **Push**.
+
+---
+
+## Step 3 — Set Up Source Data
+
+Open the Cortex Code panel and prompt:
+
+> **Prompt:**
+> ```
+> Create a new SQL file called 01_setup_source_data.sql.
+> In it, create a database called COCO_DEMO with a schema called RAW
 > and a schema called ANALYTICS. Then create two tables in RAW:
 > - CUSTOMERS (customer_id, name, email, region, signup_date)
 > - ORDERS (order_id, customer_id, order_date, amount, status)
@@ -80,14 +133,13 @@ Go to the **Changes** tab — you'll see `01_setup_source_data.sql` marked with 
 
 ---
 
-## Step 2 — Explore Your Data
+## Step 4 — Explore Your Data
 
-Create a **new SQL file** in the workspace (click **+** → SQL Worksheet). Name it `02_explore_data.sql`.
-
-Open the Cortex Code panel (bottom-right icon) and try these prompts one at a time. After each, **review the diff**, accept it, and run the SQL:
+Open the Cortex Code panel and try these prompts one at a time. After each, **review the diff**, accept it, and run the SQL:
 
 > **Prompt 1 — Data profiling:**
 > ```
+> Create a new SQL file called 02_explore_data.sql.
 > Write queries to profile the COCO_DEMO.RAW.CUSTOMERS and
 > COCO_DEMO.RAW.ORDERS tables. Show row counts, null counts per
 > column, and distinct value counts for key columns.
@@ -110,12 +162,11 @@ Go to the **Changes** tab. You'll see `02_explore_data.sql` marked with **A** (a
 
 ---
 
-## Step 3 — Build a Transformation Pipeline
-
-Create another new SQL file: `03_build_pipeline.sql`.
+## Step 5 — Build a Transformation Pipeline
 
 > **Prompt 1 — Staging layer:**
 > ```
+> Create a new SQL file called 03_build_pipeline.sql.
 > Create a view called COCO_DEMO.ANALYTICS.STG_ORDERS that joins
 > ORDERS with CUSTOMERS, adds the customer name and region, and filters
 > out cancelled orders.
@@ -142,12 +193,11 @@ Commit and push: `Add staging views and customer summary table`
 
 ---
 
-## Step 4 — Create a Semantic View
-
-Create a new SQL file: `04_create_semantic_view.sql`.
+## Step 6 — Create a Semantic View
 
 > **Prompt:**
 > ```
+> Create a new SQL file called 04_create_semantic_view.sql.
 > Create a Cortex Analyst semantic view called
 > COCO_DEMO.ANALYTICS.CUSTOMER_ANALYTICS_SV over the
 > COCO_DEMO.ANALYTICS.CUSTOMER_SUMMARY table. Include meaningful
@@ -168,7 +218,7 @@ Commit and push: `Add semantic view for customer analytics`
 
 ---
 
-## Step 5 — Build a Streamlit Dashboard
+## Step 7 — Build a Streamlit Dashboard
 
 > **Prompt:**
 > ```
@@ -185,30 +235,73 @@ Commit and push any generated files: `Add Streamlit dashboard`
 
 ---
 
-## Step 6 — Explore Enhanced CoCo Capabilities
+## Step 8 — Explore Enhanced CoCo Capabilities
 
-Open `02_enhanced_capabilities.sql`. This file contains pre-built SQL to demo advanced CoCo features:
+Now let's see what CoCo can do beyond generating code from scratch.
 
 ### Fix Errors
-Run the first query — it has intentional errors (typo + wrong function). Click the **Fix** button in the results grid and watch CoCo diagnose and fix it.
+
+Open any SQL file and paste this intentionally broken query:
+
+```sql
+SELECT
+    customer_id,
+    nama,                          -- typo: should be "name"
+    TOTAL(amount) AS total_spent   -- wrong function: should be SUM
+FROM COCO_DEMO.RAW.CUSTOMERS c
+JOIN COCO_DEMO.RAW.ORDERS o USING (customer_id)
+GROUP BY 1, 2;
+```
+
+Run it. It will fail. Click the **Fix** button in the results grid — CoCo will diagnose both errors and suggest the corrected SQL.
 
 ### Explain Code
-Highlight the second query, right-click, and select **Explain** to get a plain-English walkthrough.
+
+Highlight any complex SQL block in your workspace, right-click, and select **Explain** to get a plain-English walkthrough of what the query does.
 
 ### Quick Edit
-Highlight the second query and select **Quick Edit**, then try:
+
+Highlight a SQL block and select **Quick Edit** from the quick actions menu, then try:
 > ```
 > Add a WHERE clause to filter for only the last 90 days
 > ```
 
 ### Follow-Up Questions
-After CoCo generates a result, ask follow-ups in the chat panel:
+
+After CoCo generates a result, ask follow-ups directly in the chat panel to iterate:
 > ```
 > Can you add a percent-of-total column to these results?
 > ```
 > ```
 > Convert this into a CTE-based approach
 > ```
+> ```
+> Add window functions to rank customers within each region
+> ```
+
+---
+
+## Step 9 — Merge Back to Main
+
+Now that your feature branch has all the work, merge it back using your standard Git workflow:
+
+1. Go to **GitHub** → your `coco-quickstart` repo
+2. You'll see a banner: **"feature/build-pipeline had recent pushes"** → click **Compare & pull request**
+3. Set the following:
+   - **Title:** `Build analytics pipeline with Cortex Code`
+   - **Base branch:** `main`
+   - **Compare branch:** `feature/build-pipeline`
+4. Review the diff — you'll see every file CoCo generated
+5. Click **Create pull request**
+6. After review, click **Merge pull request** → **Confirm merge**
+
+Back in Snowsight:
+
+7. Go to the **Changes** tab in your Workspace
+8. Switch to the `main` branch
+9. Click **Pull** to get the merged code
+
+> Your Git repo now contains the full pipeline — every file was generated by CoCo, committed from the Workspace, and merged via PR. This is the production workflow.
 
 ---
 
@@ -220,23 +313,26 @@ After CoCo generates a result, ask follow-ups in the chat panel:
 | 2. Develop | Workspaces + CoCo | Generate, edit, run, iterate |
 | 3. Review diffs | Workspaces → Changes tab | Verify all changes |
 | 4. Commit & Push | Workspaces → Changes tab | Push to remote branch |
-| 5. Open PR | GitHub/GitLab | Code review + CI checks |
-| 6. Merge | GitHub/GitLab | Merge to `main` |
+| 5. Open PR | GitHub | Code review + CI checks |
+| 6. Merge | GitHub | Merge to `main` |
 | 7. Pull | Workspaces → Changes tab | Get latest `main` |
 
 > **Production best practice:** Never develop directly on `main`. Always use feature branches, push from Workspaces, and merge via Pull Request with code review.
 
 ---
 
-## Files in This Repo
+## What You Built
 
-| File | Purpose |
+| File | How it was created |
 |---|---|
-| `README.md` | This quickstart guide |
-| `AGENTS.md` | Custom CoCo instructions for this project |
-| `02_enhanced_capabilities.sql` | Advanced CoCo feature demos (intentional errors for Fix demo) |
+| `AGENTS.md` | CoCo prompt (Step 2) |
+| `01_setup_source_data.sql` | CoCo prompt (Step 3) |
+| `02_explore_data.sql` | CoCo prompt (Step 4) |
+| `03_build_pipeline.sql` | CoCo prompt (Step 5) |
+| `04_create_semantic_view.sql` | CoCo prompt (Step 6) |
+| Streamlit app | CoCo prompt (Step 7) |
 
-> All SQL files (`01_setup_source_data.sql`, `03_build_pipeline.sql`, etc.) are created by **you** during the quickstart using CoCo prompts. That's the point!
+> Every file was generated by Cortex Code, committed from the Workspace, and merged to `main` via Pull Request. Nothing was written by hand.
 
 ---
 

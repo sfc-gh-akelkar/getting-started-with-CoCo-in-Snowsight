@@ -10,7 +10,7 @@ This is a quickstart demo repo for **Cortex Code (CoCo) in Snowsight Workspaces*
 - `QUICKSTART_DB.RAW.CUSTOMERS` — customer_id, name, email, region, signup_date
 - `QUICKSTART_DB.RAW.ORDERS` — order_id, customer_id, order_date, amount, status
 
-## Analytics Tables
+## Analytics Tables (created during quickstart)
 - `QUICKSTART_DB.ANALYTICS.STG_ORDERS` — staging view joining orders with customers
 - `QUICKSTART_DB.ANALYTICS.CUSTOMER_SUMMARY` — one row per customer with aggregated metrics
 
@@ -18,4 +18,3 @@ This is a quickstart demo repo for **Cortex Code (CoCo) in Snowsight Workspaces*
 - Always use fully qualified table names (DATABASE.SCHEMA.TABLE)
 - Use `APP_WH` warehouse and `SF_INTELLIGENCE_DEMO` role
 - Follow Snowflake SQL best practices
-- When generating new SQL, append it to the currently open file rather than creating new files

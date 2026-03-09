@@ -58,35 +58,20 @@ A hands-on quickstart that walks you through using **Cortex Code (CoCo)** as you
 
 ## Step 1 — Set Up Source Data
 
-Open the file `01_setup_source_data.sql` in your workspace.
+Open `01_setup_source_data.sql` and run it. This is the only pre-built file — it creates `QUICKSTART_DB` with two tables (`CUSTOMERS` and `ORDERS`) and populates them with synthetic data.
 
-### Run the SQL directly
-This file contains the DDL and sample data to create a demo `ORDERS` and `CUSTOMERS` table. Execute it in the worksheet to seed your environment.
+After running, verify you see 500 customers and 2,000 orders.
 
-### Or, ask CoCo to help
-
-Open the Cortex Code panel (icon in the bottom-right) and try:
-
-> **Prompt:**
-> ```
-> Create a database called QUICKSTART_DB with a schema called RAW.
-> Then create two tables:
-> - CUSTOMERS (customer_id, name, email, region, signup_date)
-> - ORDERS (order_id, customer_id, order_date, amount, status)
-> Populate each with 500 rows of realistic synthetic data.
-> ```
-
-CoCo will generate the SQL, show you a diff, and you can review + apply it.
+### Git Checkpoint
+Go to the **Changes** tab — you'll see `01_setup_source_data.sql` tracked. Commit with message: `Seed source data` and **Push**.
 
 ---
 
 ## Step 2 — Explore Your Data
 
-Open `02_explore_data.sql`. This file starts empty — you'll fill it using CoCo.
+Create a **new SQL file** in the workspace (click **+** → SQL Worksheet). Name it `02_explore_data.sql`.
 
-### Suggested CoCo Prompts
-
-Try these prompts one at a time. After each, **review the diff**, apply it, and run the SQL:
+Open the Cortex Code panel (bottom-right icon) and try these prompts one at a time. After each, **review the diff**, accept it, and run the SQL:
 
 > **Prompt 1 — Data profiling:**
 > ```
@@ -108,18 +93,13 @@ Try these prompts one at a time. After each, **review the diff**, apply it, and 
 > ```
 
 ### Git Checkpoint
-After building out your exploration queries:
-1. Go to the **Changes** tab
-2. You'll see `02_explore_data.sql` marked with **M** (modified)
-3. Review the diff, write a commit message (e.g., `Add data exploration queries`), and click **Push**
+Go to the **Changes** tab. You'll see `02_explore_data.sql` marked with **A** (added). Review the diff, commit: `Add data exploration queries`, and **Push**.
 
 ---
 
 ## Step 3 — Build a Transformation Pipeline
 
-Open `03_build_pipeline.sql`. We'll use CoCo to build staging and aggregate models.
-
-### Suggested CoCo Prompts
+Create another new SQL file: `03_build_pipeline.sql`.
 
 > **Prompt 1 — Staging layer:**
 > ```
@@ -142,7 +122,7 @@ Open `03_build_pipeline.sql`. We'll use CoCo to build staging and aggregate mode
 > or best practice improvements.
 > ```
 
-CoCo will show suggested changes in a diff view — review before accepting.
+CoCo will show suggested edits in a diff view — review before accepting.
 
 ### Git Checkpoint
 Commit and push: `Add staging views and customer summary table`
@@ -151,7 +131,7 @@ Commit and push: `Add staging views and customer summary table`
 
 ## Step 4 — Create a Semantic View
 
-Open `04_create_semantic_view.sql`.
+Create a new SQL file: `04_create_semantic_view.sql`.
 
 > **Prompt:**
 > ```
@@ -188,28 +168,33 @@ Commit and push: `Add semantic view for customer analytics`
 > ```
 
 ### Git Checkpoint
-Commit and push: `Add Streamlit dashboard`
+Commit and push any generated files: `Add Streamlit dashboard`
 
 ---
 
 ## Step 6 — Explore Enhanced CoCo Capabilities
 
-Open `06_enhanced_capabilities.sql` to try these advanced features:
+Open `02_enhanced_capabilities.sql`. This file contains pre-built SQL to demo advanced CoCo features:
 
 ### Fix Errors
-Intentionally run a broken query, then click the **Fix** button in the results grid — CoCo will diagnose and suggest a fix.
+Run the first query — it has intentional errors (typo + wrong function). Click the **Fix** button in the results grid and watch CoCo diagnose and fix it.
 
 ### Explain Code
-Highlight any SQL block, right-click (or use quick actions), and select **Explain** to get a plain-English walkthrough.
+Highlight the second query, right-click, and select **Explain** to get a plain-English walkthrough.
 
 ### Quick Edit
-Highlight a SQL block and select **Quick Edit** from the quick actions menu to make targeted changes via natural language.
-
-### Ask Follow-Up Questions
-After CoCo generates a result, ask follow-up questions in the chat panel to iterate:
-
+Highlight the second query and select **Quick Edit**, then try:
 > ```
-> Can you add a WHERE clause to filter for only the last 90 days?
+> Add a WHERE clause to filter for only the last 90 days
+> ```
+
+### Follow-Up Questions
+After CoCo generates a result, ask follow-ups in the chat panel:
+> ```
+> Can you add a percent-of-total column to these results?
+> ```
+> ```
+> Convert this into a CTE-based approach
 > ```
 
 ---
@@ -236,12 +221,10 @@ After CoCo generates a result, ask follow-up questions in the chat panel to iter
 |---|---|
 | `README.md` | This quickstart guide |
 | `AGENTS.md` | Custom CoCo instructions for this project |
-| `01_setup_source_data.sql` | Seed data DDL and inserts |
-| `02_explore_data.sql` | Data exploration queries (CoCo-generated) |
-| `03_build_pipeline.sql` | Staging views and aggregate tables |
-| `04_create_semantic_view.sql` | Cortex Analyst semantic view |
-| `05_build_dashboard.sql` | Streamlit app reference |
-| `06_enhanced_capabilities.sql` | Advanced CoCo feature demos |
+| `01_setup_source_data.sql` | Seed data DDL and inserts (only pre-built SQL) |
+| `02_enhanced_capabilities.sql` | Advanced CoCo feature demos (intentional errors for Fix demo) |
+
+> All other SQL files (`02_explore_data.sql`, `03_build_pipeline.sql`, etc.) are created by **you** during the quickstart using CoCo prompts. That's the point!
 
 ---
 

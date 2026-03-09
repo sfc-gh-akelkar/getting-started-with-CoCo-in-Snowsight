@@ -1,0 +1,22 @@
+----------------------------------------------------------------------
+-- 02_explore_data.sql
+-- Data Exploration — fill this file using Cortex Code prompts
+----------------------------------------------------------------------
+-- Open the Cortex Code panel and try the prompts from the README:
+--
+-- PROMPT 1 — Data profiling:
+--   "Write queries to profile the QUICKSTART_DB.RAW.CUSTOMERS and
+--    QUICKSTART_DB.RAW.ORDERS tables. Show row counts, null counts
+--    per column, and distinct value counts for key columns."
+--
+-- PROMPT 2 — Business questions:
+--   "Write a query showing the top 10 customers by total order
+--    amount, including their region and number of orders."
+--
+-- PROMPT 3 — Time series:
+--   "Write a query showing monthly revenue trends with a 3-month
+--    moving average."
+--
+-- After each prompt, review the diff, apply, and run the SQL.
+-- Then commit and push from the Changes tab.
+----------------------------------------------------------------------

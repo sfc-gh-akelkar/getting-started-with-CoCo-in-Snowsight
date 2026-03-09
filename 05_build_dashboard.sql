@@ -1,0 +1,20 @@
+----------------------------------------------------------------------
+-- 05_build_dashboard.sql
+-- Streamlit Dashboard Reference
+----------------------------------------------------------------------
+-- This step uses CoCo to build a Streamlit in Snowflake app.
+-- The app is created as a separate Streamlit object, not a SQL file.
+--
+-- Open the Cortex Code panel and try the prompt from the README:
+--
+-- PROMPT — Build dashboard:
+--   "Build a Streamlit in Snowflake app that visualizes data from
+--    QUICKSTART_DB.ANALYTICS.CUSTOMER_SUMMARY. Include:
+--    - A bar chart of revenue by region
+--    - A line chart of monthly order trends
+--    - A filter for region
+--    Deploy it to Snowflake."
+--
+-- CoCo will generate the Streamlit app code and deploy it.
+-- After creation, commit and push any generated files.
+----------------------------------------------------------------------

@@ -1,0 +1,24 @@
+----------------------------------------------------------------------
+-- 03_build_pipeline.sql
+-- Transformation Pipeline — build staging and aggregate models
+----------------------------------------------------------------------
+-- Open the Cortex Code panel and try the prompts from the README:
+--
+-- PROMPT 1 — Staging layer:
+--   "Create a view called QUICKSTART_DB.ANALYTICS.STG_ORDERS that
+--    joins ORDERS with CUSTOMERS, adds the customer name and region,
+--    and filters out cancelled orders."
+--
+-- PROMPT 2 — Aggregate model:
+--   "Create a table called QUICKSTART_DB.ANALYTICS.CUSTOMER_SUMMARY
+--    that contains one row per customer with: total_orders,
+--    total_revenue, avg_order_value, first_order_date,
+--    last_order_date, and days_since_last_order."
+--
+-- PROMPT 3 — Optimize:
+--   "Review the SQL in this file. Suggest any performance
+--    optimizations or best practice improvements."
+--
+-- After each prompt, review the diff, apply, and run the SQL.
+-- Then commit and push from the Changes tab.
+----------------------------------------------------------------------

@@ -11,8 +11,8 @@ SELECT
     customer_id,
     nama,                          -- typo: should be "name"
     TOTAL(amount) AS total_spent   -- wrong function: should be SUM
-FROM QUICKSTART_DB.RAW.CUSTOMERS c
-JOIN QUICKSTART_DB.RAW.ORDERS o USING (customer_id)
+FROM COCO_DEMO.RAW.CUSTOMERS c
+JOIN COCO_DEMO.RAW.ORDERS o USING (customer_id)
 GROUP BY 1, 2;
 
 ----------------------------------------------------------------------
@@ -26,8 +26,8 @@ SELECT
     ROUND(SUM(o.amount), 2)                                AS total_revenue,
     ROUND(AVG(o.amount), 2)                                AS avg_order_value,
     ROUND(SUM(o.amount) / COUNT(DISTINCT c.customer_id), 2) AS revenue_per_customer
-FROM QUICKSTART_DB.RAW.CUSTOMERS c
-LEFT JOIN QUICKSTART_DB.RAW.ORDERS o
+FROM COCO_DEMO.RAW.CUSTOMERS c
+LEFT JOIN COCO_DEMO.RAW.ORDERS o
     ON c.customer_id = o.customer_id
     AND o.status = 'completed'
 GROUP BY c.region

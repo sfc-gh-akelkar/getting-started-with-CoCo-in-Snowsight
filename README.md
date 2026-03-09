@@ -64,7 +64,7 @@ Open the Cortex Code panel (bottom-right icon) and prompt:
 
 > **Prompt:**
 > ```
-> Create a database called QUICKSTART_DB with a schema called RAW
+> Create a database called COCO_DEMO with a schema called RAW
 > and a schema called ANALYTICS. Then create two tables in RAW:
 > - CUSTOMERS (customer_id, name, email, region, signup_date)
 > - ORDERS (order_id, customer_id, order_date, amount, status)
@@ -88,8 +88,8 @@ Open the Cortex Code panel (bottom-right icon) and try these prompts one at a ti
 
 > **Prompt 1 — Data profiling:**
 > ```
-> Write queries to profile the QUICKSTART_DB.RAW.CUSTOMERS and
-> QUICKSTART_DB.RAW.ORDERS tables. Show row counts, null counts per
+> Write queries to profile the COCO_DEMO.RAW.CUSTOMERS and
+> COCO_DEMO.RAW.ORDERS tables. Show row counts, null counts per
 > column, and distinct value counts for key columns.
 > ```
 
@@ -116,14 +116,14 @@ Create another new SQL file: `03_build_pipeline.sql`.
 
 > **Prompt 1 — Staging layer:**
 > ```
-> Create a view called QUICKSTART_DB.ANALYTICS.STG_ORDERS that joins
+> Create a view called COCO_DEMO.ANALYTICS.STG_ORDERS that joins
 > ORDERS with CUSTOMERS, adds the customer name and region, and filters
 > out cancelled orders.
 > ```
 
 > **Prompt 2 — Aggregate model:**
 > ```
-> Create a table called QUICKSTART_DB.ANALYTICS.CUSTOMER_SUMMARY that
+> Create a table called COCO_DEMO.ANALYTICS.CUSTOMER_SUMMARY that
 > contains one row per customer with: total_orders, total_revenue,
 > avg_order_value, first_order_date, last_order_date, and
 > days_since_last_order.
@@ -149,8 +149,8 @@ Create a new SQL file: `04_create_semantic_view.sql`.
 > **Prompt:**
 > ```
 > Create a Cortex Analyst semantic view called
-> QUICKSTART_DB.ANALYTICS.CUSTOMER_ANALYTICS_SV over the
-> QUICKSTART_DB.ANALYTICS.CUSTOMER_SUMMARY table. Include meaningful
+> COCO_DEMO.ANALYTICS.CUSTOMER_ANALYTICS_SV over the
+> COCO_DEMO.ANALYTICS.CUSTOMER_SUMMARY table. Include meaningful
 > descriptions for all columns and define common metrics like
 > total_revenue and avg_order_value.
 > ```
@@ -159,7 +159,7 @@ After creating the semantic view, test it:
 
 > **Prompt:**
 > ```
-> Use the QUICKSTART_DB.ANALYTICS.CUSTOMER_ANALYTICS_SV semantic view
+> Use the COCO_DEMO.ANALYTICS.CUSTOMER_ANALYTICS_SV semantic view
 > to answer: "Which region has the highest average order value?"
 > ```
 
@@ -173,7 +173,7 @@ Commit and push: `Add semantic view for customer analytics`
 > **Prompt:**
 > ```
 > Build a Streamlit in Snowflake app that visualizes data from
-> QUICKSTART_DB.ANALYTICS.CUSTOMER_SUMMARY. Include:
+> COCO_DEMO.ANALYTICS.CUSTOMER_SUMMARY. Include:
 > - A bar chart of revenue by region
 > - A line chart of monthly order trends
 > - A filter for region

@@ -58,12 +58,25 @@ A hands-on quickstart that walks you through using **Cortex Code (CoCo)** as you
 
 ## Step 1 — Set Up Source Data
 
-Open `01_setup_source_data.sql` and run it. This is the only pre-built file — it creates `QUICKSTART_DB` with two tables (`CUSTOMERS` and `ORDERS`) and populates them with synthetic data.
+Create a **new SQL file** in the workspace (click **+** → SQL Worksheet). Name it `01_setup_source_data.sql`.
 
-After running, verify you see 500 customers and 2,000 orders.
+Open the Cortex Code panel (bottom-right icon) and prompt:
+
+> **Prompt:**
+> ```
+> Create a database called QUICKSTART_DB with a schema called RAW
+> and a schema called ANALYTICS. Then create two tables in RAW:
+> - CUSTOMERS (customer_id, name, email, region, signup_date)
+> - ORDERS (order_id, customer_id, order_date, amount, status)
+> Populate CUSTOMERS with 500 rows and ORDERS with 2000 rows of
+> realistic synthetic data. Use GENERATOR() for the inserts.
+> Add a verification query at the end showing row counts.
+> ```
+
+Review the diff, accept it, and run the SQL. Verify you see 500 customers and 2,000 orders.
 
 ### Git Checkpoint
-Go to the **Changes** tab — you'll see `01_setup_source_data.sql` tracked. Commit with message: `Seed source data` and **Push**.
+Go to the **Changes** tab — you'll see `01_setup_source_data.sql` marked with **A** (added). Commit with message: `Seed source data` and **Push**.
 
 ---
 
@@ -221,10 +234,9 @@ After CoCo generates a result, ask follow-ups in the chat panel:
 |---|---|
 | `README.md` | This quickstart guide |
 | `AGENTS.md` | Custom CoCo instructions for this project |
-| `01_setup_source_data.sql` | Seed data DDL and inserts (only pre-built SQL) |
 | `02_enhanced_capabilities.sql` | Advanced CoCo feature demos (intentional errors for Fix demo) |
 
-> All other SQL files (`02_explore_data.sql`, `03_build_pipeline.sql`, etc.) are created by **you** during the quickstart using CoCo prompts. That's the point!
+> All SQL files (`01_setup_source_data.sql`, `03_build_pipeline.sql`, etc.) are created by **you** during the quickstart using CoCo prompts. That's the point!
 
 ---
 
